@@ -1,10 +1,13 @@
+//simple server for testing during developement
+
+
 const express = require("express");
 const app = express();
 const path = require("path");
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-  console.log(`The app server is running on port: ${port}`);
+  console.log(`The dev server is running on port: ${port}`);
 });
 
 const DIST_DIR = path.join(__dirname, "dist");
