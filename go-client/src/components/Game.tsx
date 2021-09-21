@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useMemo, useCallback } from "react";
 import styled from "styled-components";
+import { useTypedSelector } from "./hooks";
+
 import Stone from "./Stone";
 
 const Lines = styled.div`
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(12, 1fr);
   border: 2px solid black;
   margin: 5%;
   height: 90%;
@@ -13,10 +15,16 @@ const Lines = styled.div`
 
 const Liberties = styled.div`
   position: absolute;
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
   height: min(98vh, 50vw);
   width: min(98vh, 50vw);
+`;
+
+const LibertiesContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+  margin: 2%;
+  height: 96%;
+  width: 96%;
 `;
 
 const BoardContainer = styled.div`
@@ -40,97 +48,34 @@ const LineBox = styled.div`
 
 
 const GameBoard = () => {
-  const LineBoxes = [];
-  for (let i = 0; i < 64; i++) {
-    LineBoxes.push(<LineBox key={i} />);
-  }
-  console.log(LineBoxes);
+  const boardState = useTypedSelector(state => state.game.board);
+  
+  const LineBoxes = useMemo(()=> {
+    const arr = [];
+    for (let i = 0; i < 144; i++) {
+      arr.push(<LineBox key={i} />);
+    }
+    return arr;
+  },[]);
+
+  const Board = boardState.map((StoneColor, i) => {
+    switch (StoneColor) {
+      case 0:
+        return <Stone name="empty" key={i} index={i}  />;
+      case 1:
+        return <Stone name="black" key={i} index={i} />;
+      case 2:
+        return <Stone name="white" key={i} index={i} />;
+    } 
+  })
 
   return (
     <BoardContainer>
       <Lines>{LineBoxes}</Lines>
       <Liberties>
-        <Stone color="white" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
-        <Stone color="empty" />
+        <LibertiesContainer>
+          {Board}
+        </LibertiesContainer>
       </Liberties>
     </BoardContainer>
   );
