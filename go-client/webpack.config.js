@@ -2,11 +2,15 @@ const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.tsx",
+  entry: "./src/index.js",
   output: {
     filename: "bundle.js",
     path: path.resolve("dist"),
     publicPath: "/",
+  },
+  devServer: {
+    static: "./dist",
+    hot: true,
   },
   module: {
     rules: [
@@ -14,11 +18,6 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: "babel-loader",
-      },
-      {
-        test: /\.tsx?$/,
-        use: "ts-loader",
-        exclude: /node_modules/,
       },
       {
         test: /\.html$/,
@@ -42,7 +41,7 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".js"],
   },
   output: {
     filename: "bundle.js",

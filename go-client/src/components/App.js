@@ -11,14 +11,6 @@ const StyledApp = styled.div`
    grid-template-columns: 1fr 6fr 1fr;
 `;
 
-
-//board
-//player section
-//playback buttons
-//pass and resign buttons
-
-//start on the login 
-
 const App = () => {
   return (
     <StyledApp>

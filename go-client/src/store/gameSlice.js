@@ -1,25 +1,13 @@
 //a redux reducer for keeping the state of a game
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-enum Stone {
-  EMPTY = 0,
-  BLACK,
-  WHITE,
-}
-
-interface GameState {
-  board: Array<Stone>;
-  whiteCaptures: number;
-  blackCaptures: number;
-  playerTurn: string;
-  gameOn: boolean;
-};
-
-const initialState: GameState = {
-    board: new Array(169).fill(0), 
+const initialState = {
+    board: new Array(13).fill(0).map(() => new Array(13).fill(0)), //13 * 13 board
     whiteCaptures: 0, 
     blackCaptures: 0, 
     playerTurn: "black",
+    userColor: "undefined",
+    move: 0,
     gameOn: false,
 };
 
@@ -27,6 +15,9 @@ const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
+    updateState(state, action) {
+      
+    },
     startGame(state) {
       state.gameOn = true;
     },
@@ -36,23 +27,30 @@ const gameSlice = createSlice({
     resetBoard(state) {
       state.board.fill(0);
     },
-    setBoard(state, action: PayloadAction<Array<Stone>>) {
+    setBoard(state, action) {
       state.board = action.payload;
     },
-    placeStone(state, action: PayloadAction<number>) {
-      if (state.board[action.payload] !== Stone.EMPTY) {
+    placeStone(state, action) {
+      const row = action.payload[0];
+      const col = action.payload[1];
+      if (state.board[row][col] !== 0 || state.playerTurn !== state.userColor || !state.gameOn) {
         return;
       }
+      console.log("stone placed")
       if (state.playerTurn === "black") {
-        state.board[action.payload] = Stone.BLACK;
+        state.board[row][col] = 1;
+        state.move += 1;
+        state.playerTurn = "white";
       } else {
-        state.board[action.payload] = Stone.WHITE;
+        state.move += 1;
+        state.board[row][col] = 2;
+        state.playerTurn = "black";
       }
     },
-    setWhiteCaptures(state, action: PayloadAction<number>) {
+    setWhiteCaptures(state, action) {
       state.whiteCaptures = action.payload;
     },
-    setBlackCaptures(state, action: PayloadAction<number>) {
+    setBlackCaptures(state, action) {
       state.blackCaptures = action.payload;
     },
   },
